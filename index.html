@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Publikasi DTPS Teknik Sipil UTU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: kepala dengan logo, panel pengaturan, ringkasan + grafik tahunan, tabel DTPS dengan panel detail di samping (bertumpuk di layar sempit) */
+:root{
+  --bg:#f3f4f2; --surface:#ffffff; --line:#d9dcd6; --fg:#1d2320; --muted:#5d665f;
+  --accent:#1f6b5c; --accent-soft:#e1efea; --warn:#9a5b12; --bad:#a3352b;
+  --display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"Consolas",monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#141816; --surface:#1c211e; --line:#313833; --fg:#e7ebe8; --muted:#9aa49d;
+  --accent:#5fbfa8; --accent-soft:#1f322c; --warn:#e0a458; --bad:#ef8a7f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141816; --surface:#1c211e; --line:#313833; --fg:#e7ebe8; --muted:#9aa49d;
+  --accent:#5fbfa8; --accent-soft:#1f322c; --warn:#e0a458; --bad:#ef8a7f; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font:15px/1.55 var(--body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 48px}
+.wrap{max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+h1{font:800 clamp(1.6rem,3.6vw,2.3rem)/1.1 var(--display);margin:0;letter-spacing:-.01em;text-wrap:balance}
+h2{font:700 1.05rem/1.2 var(--display);margin:0;text-transform:uppercase;letter-spacing:.06em}
+.eyebrow{font:500 .75rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.lede{color:var(--muted);max-width:72ch;margin:6px 0 0}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}
+.top>div{min-width:0}
+.logo{flex:0 0 auto;width:92px;height:92px}
+.logo img{width:100%;height:100%;object-fit:contain}
+@media (max-width:560px){.logo{width:64px;height:64px}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:18px}
+.controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:20px}
+@media (max-width:760px){.controls{grid-template-columns:minmax(0,1fr)}}
+fieldset{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+legend{font:600 .8rem var(--body);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px}
+label{font-size:.9rem}
+.chk{display:flex;gap:8px;align-items:center}
+input[type=text],input[type=number],textarea,select{width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--fg)}
+textarea{min-height:170px;resize:vertical;font-size:.86rem;line-height:1.45}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+button{font:600 .9rem var(--body);padding:9px 16px;border-radius:4px;border:1px solid var(--accent);background:var(--accent);color:var(--surface);cursor:pointer}
+button.ghost{background:transparent;color:var(--accent)}
+button.small{padding:4px 10px;font-size:.78rem}
+button:disabled{opacity:.5;cursor:progress}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,th:focus-visible,tr:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.status{font:400 .85rem var(--mono);color:var(--muted);min-height:1.4em}
+.status.err{color:var(--bad)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{border-left:3px solid var(--accent);padding:4px 0 4px 12px}
+.stat b{display:block;font:700 1.7rem/1.1 var(--display);font-variant-numeric:tabular-nums}
+.stat span{font-size:.8rem;color:var(--muted)}
+.years{display:flex;align-items:flex-end;gap:6px;height:150px;padding-top:18px;overflow-x:auto}
+.yr{flex:1 0 34px;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
+.yr i{display:block;width:70%;background:var(--accent);border-radius:2px 2px 0 0;min-height:2px}
+.yr small{font:400 .7rem var(--mono);color:var(--muted)}
+.yr em{font:500 .72rem var(--mono);font-style:normal;font-variant-numeric:tabular-nums}
+.grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:960px){.grid{grid-template-columns:minmax(0,1fr)}}
+.tablebox{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.87rem}
+th,td{padding:8px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font:600 .7rem var(--body);text-transform:uppercase;letter-spacing:.05em;color:var(--muted);cursor:pointer;white-space:nowrap;user-select:none}
+th.num,td.num{text-align:right;font-variant-numeric:tabular-nums}
+tbody tr{cursor:pointer}
+tbody tr:hover{background:var(--accent-soft)}
+tbody tr.sel{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+tbody tr.none td{color:var(--muted)}
+.pill{display:inline-block;font:500 .68rem var(--mono);padding:1px 6px;border-radius:999px;border:1px solid var(--line);color:var(--muted);margin-left:6px;white-space:nowrap}
+.pill.warn{border-color:var(--warn);color:var(--warn)}
+.pill.bad{border-color:var(--bad);color:var(--bad)}
+.pill.ok{border-color:var(--accent);color:var(--accent)}
+.detail{position:sticky;top:env(safe-area-inset-top,0px);max-height:88vh;overflow:auto}
+.detail h3{font:700 1.15rem/1.25 var(--display);margin:0 0 4px}
+.detail .meta{font:400 .8rem var(--mono);color:var(--muted);display:flex;gap:12px;flex-wrap:wrap}
+.profiles{list-style:none;padding:0;margin:12px 0 0;display:flex;flex-direction:column;gap:6px}
+.profiles li{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:.85rem;border:1px solid var(--line);border-radius:4px;padding:6px 8px}
+.profiles li.out{opacity:.55;text-decoration:line-through}
+.profiles li>span{min-width:0}
+.profiles small{display:block;color:var(--muted);font:400 .72rem var(--mono)}
+.wtools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.wtools select{width:auto;font-size:.85rem;padding:7px 8px}
+.wcount{font:400 .78rem var(--mono);color:var(--muted)}
+.works{list-style:none;padding:0;margin:14px 0 0;display:flex;flex-direction:column;gap:12px}
+.works li{border-top:1px solid var(--line);padding-top:10px}
+.works .t{font-weight:500}
+.works .v{font-size:.8rem;color:var(--muted)}
+a{color:var(--accent)}
+.empty{color:var(--muted);font-size:.9rem}
+.note{font-size:.82rem;color:var(--muted);max-width:85ch}
+.xbar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px 0 12px;border-bottom:1px solid var(--line);margin-bottom:6px}
+.xlabel{font:600 .7rem var(--body);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-right:4px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="eyebrow">Prodi S1 Teknik Sipil · Universitas Teuku Umar</div>
+      <h1>Publikasi DTPS Teknik Sipil UTU</h1>
+      <p class="lede">Rekap publikasi khusus Dosen Tetap Program Studi (DTPS): jumlah karya, posisi penulis pertama, sitasi, h-index, dan daftar artikel tiap dosen. Data diperbarui setiap halaman dibuka.</p>
+    </div>
+    <div class="logo"><img src="data:image/webp;base64,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" alt="Logo Universitas Teuku Umar"></div>
+  </header>
+
+  <section class="panel controls" aria-label="Pengaturan">
+    <fieldset>
+      <legend>Periode publikasi</legend>
+      <div class="pair">
+        <div><label for="yearFrom">Dari tahun</label><input type="number" id="yearFrom" value="2018" min="1990" max="2035"></div>
+        <div><label for="yearTo">Sampai tahun</label><input type="number" id="yearTo" min="1990" max="2035"></div>
+      </div>
+      <label class="chk"><input type="checkbox" id="utuOnly"><span>Hanya karya yang mencantumkan afiliasi UTU</span></label>
+      <div class="row" style="margin-top:6px">
+        <button id="run" type="button">Perbarui data</button>
+        <button id="resetList" type="button" class="ghost">Kembalikan daftar awal</button>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Daftar DTPS (satu nama per baris)</legend>
+      <textarea id="names" aria-label="Daftar nama DTPS"></textarea>
+    </fieldset>
+  </section>
+
+  <div class="status" id="status" role="status" aria-live="polite">Menyiapkan…</div>
+
+  <section class="panel" aria-label="Ringkasan">
+    <div class="stats">
+      <div class="stat"><b id="sDosen">–</b><span>DTPS ditemukan datanya</span></div>
+      <div class="stat"><b id="sWorks">–</b><span>karya DTPS (tanpa duplikat)</span></div>
+      <div class="stat"><b id="sFirst">–</b><span>karya dengan penulis pertama DTPS</span></div>
+      <div class="stat"><b id="sCites">–</b><span>sitasi karya pada periode ini</span></div>
+      <div class="stat"><b id="sRange">–</b><span>periode</span></div>
+    </div>
+    <div class="years" id="years" aria-label="Karya DTPS per tahun"></div>
+  </section>
+
+  <div class="grid">
+    <section class="panel" aria-label="Tabel DTPS">
+      <div class="row" style="justify-content:space-between;margin-bottom:10px">
+        <h2>Dosen DTPS</h2>
+        <div class="row">
+          <input type="text" id="filterName" placeholder="Saring nama…" style="width:170px">
+        </div>
+      </div>
+      <div class="xbar" role="group" aria-label="Export Excel">
+        <span class="xlabel">Export Excel</span>
+        <button type="button" class="ghost small" data-x="full" title="Ringkasan, DTPS, karya, karya per dosen, per tahun">Rekap lengkap</button>
+        <button type="button" class="ghost small" data-x="dosen" title="Satu baris per dosen">Rekap DTPS</button>
+        <button type="button" class="ghost small" data-x="karya" title="Artikel tanpa duplikat, dengan link">Daftar karya</button>
+        <button type="button" class="ghost small" data-x="perdosen" title="Satu baris per dosen per artikel, dengan link">Karya per dosen</button>
+      </div>
+      <div class="tablebox">
+        <table>
+          <thead><tr>
+            <th data-k="no" class="num" tabindex="0">No</th>
+            <th data-k="name" tabindex="0">Nama dosen</th>
+            <th data-k="n" class="num" tabindex="0">Karya periode</th>
+            <th data-k="first" class="num" tabindex="0">Penulis pertama</th>
+            <th data-k="pcites" class="num" tabindex="0">Sitasi periode</th>
+            <th data-k="works" class="num" tabindex="0">Total karya</th>
+            <th data-k="cites" class="num" tabindex="0">Total sitasi</th>
+            <th data-k="h" class="num" tabindex="0">h</th>
+            <th data-k="i10" class="num" tabindex="0">i10</th>
+          </tr></thead>
+          <tbody id="tbody"><tr><td colspan="9" class="empty">Data sedang ditarik…</td></tr></tbody>
+        </table>
+      </div>
+      <p class="note">“Karya periode” dan “Penulis pertama” dihitung dari karya pada rentang tahun terpilih. Total karya, total sitasi, h dan i10 adalah angka keseluruhan profil penulis. Satu dosen bisa memiliki lebih dari satu profil; semuanya digabung di satu baris. Tanda <span class="pill warn">perlu cek</span> berarti ada profil yang cocok hanya sebagian dengan nama dosen. Klik nama untuk memeriksa profilnya dan keluarkan yang bukan milik dosen tersebut.</p>
+    </section>
+
+    <aside class="panel detail" id="detail" aria-label="Detail dosen">
+      <p class="empty">Klik nama dosen di tabel untuk melihat profil dan daftar karyanya.</p>
+    </aside>
+  </div>
+
+  <p class="note">Cakupan data untuk jurnal lokal bisa berbeda dengan Google Scholar dan SINTA, jadi gunakan sebagai pembanding, bukan pengganti angka resmi SINTA.</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+const API = "https://api.openalex.org";
+const INST = "I4210109760";
+const DTPS = ["Aulia Rahman","Alvisyahri","Delfian Masrura","Dewi Purnama Sari","Fitry Hasdanita","Firzan","Rajuli Amra","Andrisman Satria","Bambang Tripoli","Chaira","Edi Mawardi","Lissa Opirina","Meidia Refiyanni","Muhammad Arrie Rafshanjani Amin","Muhammad Ikhsan","Rahmat Djamaluddin","Samsunan","Teuku Farizal","Zulyaden","Raina Parmitalia Dinda","Rezqi Malia","Rinaldy","Yulita Rahmi","Veranita","Fachruddin","Fadli Idris","Irfan","Astiah Amir","Andi Yusra","Azwanda","Cut Suciatina Silvia","Dian Febrianti","Inseun Yuri Salena","Meylis Safriani","Rita Fazlina","Roni Agusmaniza","Zakia"];
+
+const $ = id => document.getElementById(id);
+const fmt = n => (n==null||isNaN(n)) ? "–" : Number(n).toLocaleString("id-ID");
+const shortId = u => (u||"").split("/").pop();
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+const plain = h => { const x=document.createElement("div"); x.innerHTML=h||""; return x.textContent; };
+const isUTU = inst => inst && shortId(inst.id) === INST;
+
+let dosen = [];            // {no,name,profiles:[{...,weak}],...aggregates}
+let rawWorks = new Map();  // workId -> work
+let excluded = new Set();  // profile ids dikeluarkan
+let lastRun = null, sortKey="no", sortDir=1, selected=null;
+
+try{ excluded = new Set(JSON.parse(localStorage.getItem("dtpsExcluded")||"[]")); }catch(e){}
+const saveExcluded = () => { try{ localStorage.setItem("dtpsExcluded", JSON.stringify([...excluded])); }catch(e){} };
+function loadNames(){
+  let saved=null; try{ saved=localStorage.getItem("dtpsNames"); }catch(e){}
+  $("names").value = saved || DTPS.join("\n");
+}
+$("yearTo").value = new Date().getFullYear();
+loadNames();
+
+function setStatus(msg, err){ const s=$("status"); s.textContent=msg; s.classList.toggle("err",!!err); }
+
+async function get(path, params={}){
+  const u = new URL(API + path);
+  for (const [k,v] of Object.entries(params)) if (v!==undefined && v!=="") u.searchParams.set(k,v);
+  for (let attempt=1; attempt<=6; attempt++){
+    let r; try{ r = await fetch(u); }catch(e){ await sleep(1000*attempt); continue; }
+    if (r.ok) return r.json();
+    if (r.status===429 || r.status>=500){ await sleep(1200*attempt); continue; }
+    throw new Error(`Server data menjawab dengan kode ${r.status}. Coba muat ulang halaman.`);
+  }
+  throw new Error("Server data sedang sibuk atau koneksi terputus. Coba lagi beberapa saat.");
+}
+
+/* ---- pencocokan nama ---- */
+const TITLES = new Set(["dr","ir","st","mt","msc","meng","phd","prof","drs","se","si","mm","ipm","ipu"]);
+function toks(s){
+  return [...new Set((s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase()
+    .replace(/[^a-z\s]/g," ").split(/\s+/).filter(t=>t && !TITLES.has(t)))];
+}
+const tm = (a,b) => a===b || (a.length===1 && b.startsWith(a)) || (b.length===1 && a.startsWith(b));
+const covers = (X,Y) => X.every(x=>Y.some(y=>tm(x,y)));
+function matchName(dName, aName){
+  const D=toks(dName), A=toks(aName);
+  if (!D.length || !A.length) return null;
+  if (covers(D,A) && covers(A,D)) return "strong";
+  if (covers(D,A)) return D.length>=2 ? "strong" : "weak";
+  if (A.length>=2 && covers(A,D)) return A.length>=3 ? "strong" : "weak";
+  return null;
+}
+
+/* ---- penarikan data ---- */
+const AUTHOR_FIELDS = "id,display_name,display_name_alternatives,orcid,works_count,cited_by_count,summary_stats,last_known_institutions";
+async function findProfiles(name){
+  const r = await get("/authors",{search:name, filter:`affiliations.institution.id:${INST}`, per_page:15, select:AUTHOR_FIELDS});
+  const out=[];
+  for (const a of r.results){
+    const names=[a.display_name, ...(a.display_name_alternatives||[])];
+    let best=null;
+    for (const n of names){ const m=matchName(name,n); if (m==="strong"){best="strong";break;} if (m) best=m; }
+    if (best) out.push({
+      id:shortId(a.id), name:a.display_name, orcid:a.orcid?a.orcid.replace("https://orcid.org/",""):"",
+      works:a.works_count, cites:a.cited_by_count, h:a.summary_stats?.h_index, i10:a.summary_stats?.i10_index,
+      lastInst:(a.last_known_institutions||[]).map(x=>x.display_name).join("; "), weak: best==="weak"
+    });
+  }
+  return out;
+}
+
+async function fetchWorks(ids){
+  const y1=parseInt($("yearFrom").value,10)||1990, y2=parseInt($("yearTo").value,10)||2100;
+  const map=new Map();
+  for (let i=0;i<ids.length;i+=40){
+    const batch=ids.slice(i,i+40);
+    let f=`author.id:${batch.join("|")},publication_year:${y1}-${y2}`;
+    let cursor="*", page=0;
+    while (cursor && page<30){
+      page++;
+      const r=await get("/works",{filter:f, per_page:200, cursor,
+        select:"id,doi,display_name,publication_year,cited_by_count,primary_location,authorships,type"});
+      r.results.forEach(w=>map.set(w.id,w));
+      setStatus(`Mengambil karya… ${map.size} karya terkumpul`);
+      cursor=r.meta.next_cursor; if(!r.results.length) break;
+    }
+  }
+  return map;
+}
+
+async function run(){
+  lock(true);
+  try{
+    const names=$("names").value.split("\n").map(s=>s.replace(/^\s*\d+[.)]?\s*/,"").trim()).filter(Boolean);
+    if (!names.length) throw new Error("Daftar DTPS masih kosong.");
+    try{ localStorage.setItem("dtpsNames", names.join("\n")); }catch(e){}
+    dosen=[];
+    for (const [i,n] of names.entries()){
+      setStatus(`Mencari profil ${n} (${i+1}/${names.length})…`);
+      dosen.push({no:i+1, name:n, profiles: await findProfiles(n)});
+      await sleep(120);
+    }
+    const ids=[...new Set(dosen.flatMap(d=>d.profiles.map(p=>p.id)))];
+    rawWorks = ids.length ? await fetchWorks(ids) : new Map();
+    lastRun=new Date();
+    compute();
+    const miss=dosen.filter(d=>!d.active.length).map(d=>d.name);
+    setStatus(`Selesai ${lastRun.toLocaleString("id-ID")}. ${dosen.length-miss.length} dari ${dosen.length} DTPS ditemukan.` + (miss.length?` Belum ditemukan: ${miss.join(", ")}.`:""), !!miss.length);
+  }catch(e){ setStatus(e.message,true); }
+  lock(false);
+}
+function lock(on){ $("run").disabled=on; }
+
+/* ---- agregasi ---- */
+let uniqueWorks=[];
+function compute(){
+  const utuOnly=$("utuOnly").checked;
+  const owner=new Map(); // profileId -> dosen
+  for (const d of dosen){
+    d.active=d.profiles.filter(p=>!excluded.has(p.id));
+    d.active.forEach(p=>owner.set(p.id,d));
+    d.list=[]; d.firstSet=new Set();
+  }
+  const seen=new Set(); uniqueWorks=[];
+  for (const w of rawWorks.values()){
+    let hit=false;
+    const touched=new Set();
+    for (const au of (w.authorships||[])){
+      const d=owner.get(shortId(au.author?.id)); if(!d) continue;
+      if (utuOnly && !(au.institutions||[]).some(isUTU)) continue;
+      if (!touched.has(d)){ d.list.push(w); touched.add(d); }
+      if (au.author_position==="first") d.firstSet.add(w.id);
+      hit=true;
+    }
+    if (hit && !seen.has(w.id)){ seen.add(w.id); uniqueWorks.push(w); }
+  }
+  for (const d of dosen){
+    const A=d.active;
+    d.n=d.list.length; d.first=d.firstSet.size;
+    d.pcites=d.list.reduce((s,w)=>s+(w.cited_by_count||0),0);
+    d.works=A.length?A.reduce((s,p)=>s+(p.works||0),0):null;
+    d.cites=A.length?A.reduce((s,p)=>s+(p.cites||0),0):null;
+    d.h=A.length?Math.max(...A.map(p=>p.h||0)):null;
+    d.i10=A.length?Math.max(...A.map(p=>p.i10||0)):null;
+    d.orcid=[...new Set(A.map(p=>p.orcid).filter(Boolean))].join("; ");
+    d.weak=A.some(p=>p.weak);
+  }
+  renderStats(); renderTable();
+  if (selected) showDetail(selected);
+}
+
+function isFirstDTPS(w){
+  const ids=new Set(dosen.flatMap(d=>d.active.map(p=>p.id)));
+  const f=(w.authorships||[]).find(x=>x.author_position==="first");
+  return !!(f && ids.has(shortId(f.author?.id)));
+}
+
+function renderStats(){
+  $("sDosen").textContent=`${dosen.filter(d=>d.active.length).length} / ${dosen.length}`;
+  $("sWorks").textContent=fmt(uniqueWorks.length);
+  const nf=uniqueWorks.filter(isFirstDTPS).length;
+  $("sFirst").textContent=`${fmt(nf)} (${uniqueWorks.length?Math.round(nf/uniqueWorks.length*100):0}%)`;
+  $("sCites").textContent=fmt(uniqueWorks.reduce((s,w)=>s+(w.cited_by_count||0),0));
+  $("sRange").textContent=`${$("yearFrom").value}–${$("yearTo").value}`;
+  const by={}; uniqueWorks.forEach(w=>{ if(w.publication_year) by[w.publication_year]=(by[w.publication_year]||0)+1; });
+  const ys=Object.keys(by).map(Number).sort((a,b)=>a-b), max=Math.max(1,...Object.values(by));
+  $("years").innerHTML=ys.map(y=>`<div class="yr" title="${y}: ${by[y]} karya"><em>${by[y]}</em><i style="height:${(by[y]/max*100).toFixed(1)}%"></i><small>${y}</small></div>`).join("");
+}
+
+function rows(){
+  const q=$("filterName").value.trim().toLowerCase();
+  return dosen.filter(d=>!q||d.name.toLowerCase().includes(q)).sort((a,b)=>{
+    const x=a[sortKey], y=b[sortKey];
+    if (typeof x==="string") return sortDir*x.localeCompare(y,"id");
+    return sortDir*((x??-1)-(y??-1));
+  });
+}
+
+function renderTable(){
+  const tb=$("tbody"); tb.innerHTML="";
+  const list=rows();
+  if (!list.length){ tb.innerHTML=`<tr><td colspan="9" class="empty">Belum ada data.</td></tr>`; return; }
+  for (const d of list){
+    const tr=document.createElement("tr"); tr.tabIndex=0;
+    if (d.no===selected) tr.classList.add("sel");
+    if (!d.active.length) tr.classList.add("none");
+    const no=document.createElement("td"); no.className="num"; no.textContent=d.no; tr.appendChild(no);
+    const td=document.createElement("td"); td.textContent=d.name;
+    const pill=(cls,txt)=>{ const p=document.createElement("span"); p.className="pill "+cls; p.textContent=txt; td.appendChild(p); };
+    if (!d.active.length) pill("bad","tidak ditemukan");
+    else { if (d.active.length>1) pill("", d.active.length+" profil"); if (d.weak) pill("warn","perlu cek"); }
+    tr.appendChild(td);
+    for (const k of ["n","first","pcites","works","cites","h","i10"]){ const c=document.createElement("td"); c.className="num"; c.textContent=d.active.length?fmt(d[k]):"–"; tr.appendChild(c); }
+    tr.addEventListener("click",()=>showDetail(d.no));
+    tr.addEventListener("keydown",e=>{ if(e.key==="Enter") showDetail(d.no); });
+    tb.appendChild(tr);
+  }
+  document.querySelectorAll("th").forEach(th=>th.setAttribute("aria-sort", th.dataset.k===sortKey?(sortDir>0?"ascending":"descending"):"none"));
+}
+
+/* ---- detail ---- */
+const linkOf = w => w.doi || w.primary_location?.landing_page_url || "";
+function posOf(w,d){
+  const ids=new Set(d.active.map(p=>p.id));
+  return (w.authorships||[]).find(x=>ids.has(shortId(x.author?.id)))?.author_position||"";
+}
+const detailState={sort:"year-desc", year:"", first:false};
+
+function detailView(d){
+  const [k,dir]=detailState.sort.split("-");
+  const val=w=>k==="year"?(w.publication_year||0):(w.cited_by_count||0);
+  return d.list.filter(w=>(!detailState.year||String(w.publication_year)===detailState.year)&&(!detailState.first||d.firstSet.has(w.id)))
+    .sort((a,b)=>(dir==="asc"?1:-1)*(val(a)-val(b)) || (b.cited_by_count||0)-(a.cited_by_count||0));
+}
+
+function showDetail(no){
+  if (selected!==no){ detailState.year=""; detailState.first=false; }
+  selected=no; renderTable();
+  const d=dosen.find(x=>x.no===no), box=$("detail"); box.innerHTML="";
+  const h=document.createElement("h3"); h.textContent=`${d.no}. ${d.name}`; box.appendChild(h);
+  const m=document.createElement("div"); m.className="meta";
+  m.innerHTML=d.active.length?`<span>${fmt(d.n)} karya periode</span><span>${fmt(d.first)} penulis pertama</span><span>h ${fmt(d.h)}</span><span>i10 ${fmt(d.i10)}</span>`:`<span>Belum ditemukan profil dengan afiliasi UTU</span>`;
+  box.appendChild(m);
+
+  if (d.profiles.length){
+    const ul=document.createElement("ul"); ul.className="profiles";
+    for (const p of d.profiles){
+      const li=document.createElement("li"); if (excluded.has(p.id)) li.classList.add("out");
+      const s=document.createElement("span");
+      s.textContent=p.name;
+      if (p.weak){ const w=document.createElement("span"); w.className="pill warn"; w.textContent="perlu cek"; s.appendChild(w); }
+      const sm=document.createElement("small");
+      sm.textContent=`${fmt(p.works)} karya · ${fmt(p.cites)} sitasi · ${p.orcid?"ORCID "+p.orcid:"tanpa ORCID"}${p.lastInst?" · "+p.lastInst:""}`;
+      s.appendChild(sm);
+      const b=document.createElement("button"); b.type="button"; b.className="ghost small";
+      b.textContent=excluded.has(p.id)?"Masukkan":"Keluarkan";
+      b.onclick=()=>{ excluded.has(p.id)?excluded.delete(p.id):excluded.add(p.id); saveExcluded(); compute(); };
+      li.append(s,b); ul.appendChild(li);
+    }
+    box.appendChild(ul);
+  }
+  if (!d.active.length){
+    const p=document.createElement("p"); p.className="note";
+    p.textContent="Coba tulis nama sesuai yang tercantum di artikel (misalnya dengan nama lengkap atau inisial), lalu klik Perbarui data. Dosen yang belum punya artikel ber-DOI juga belum akan muncul.";
+    box.appendChild(p); return;
+  }
+
+  const bar=document.createElement("div"); bar.className="wtools";
+  const bx=document.createElement("button"); bx.type="button"; bx.className="ghost"; bx.textContent="Excel karya";
+  const ss=document.createElement("select"); ss.id="wSort"; ss.setAttribute("aria-label","Urutkan karya");
+  ss.innerHTML=`<option value="year-desc">Tahun terbaru</option><option value="year-asc">Tahun terlama</option><option value="cite-desc">Sitasi terbanyak</option>`;
+  ss.value=detailState.sort;
+  const ys=document.createElement("select"); ys.id="wYear"; ys.setAttribute("aria-label","Saring tahun");
+  const years=[...new Set(d.list.map(w=>w.publication_year).filter(Boolean))].sort((a,b)=>b-a);
+  ys.innerHTML=`<option value="">Semua tahun</option>`+years.map(y=>`<option value="${y}">${y}</option>`).join("");
+  ys.value=detailState.year;
+  const fl=document.createElement("label"); fl.className="chk"; fl.innerHTML=`<input type="checkbox" id="wFirst"><span style="font-size:.85rem">Hanya penulis pertama</span>`;
+  fl.querySelector("input").checked=detailState.first;
+  const cnt=document.createElement("span"); cnt.className="wcount";
+  bar.append(bx,ss,ys,fl,cnt); box.appendChild(bar);
+  const ul=document.createElement("ul"); ul.className="works"; box.appendChild(ul);
+
+  const draw=()=>{
+    const list=detailView(d); cnt.textContent=`${list.length} dari ${d.list.length} karya`;
+    ul.innerHTML="";
+    if (!list.length){ ul.innerHTML=`<li class="empty">Tidak ada karya untuk pilihan ini.</li>`; return; }
+    for (const w of list){
+      const li=document.createElement("li");
+      const t=document.createElement("div"); t.className="t"; t.textContent=plain(w.display_name)||"(tanpa judul)";
+      if (d.firstSet.has(w.id)){ const p=document.createElement("span"); p.className="pill ok"; p.textContent="penulis pertama"; t.appendChild(p); }
+      const v=document.createElement("div"); v.className="v";
+      v.textContent=`${w.publication_year||"–"} · ${w.primary_location?.source?.display_name||"sumber tidak tercatat"} · ${fmt(w.cited_by_count)} sitasi`;
+      li.append(t,v);
+      const url=linkOf(w);
+      if (url){ const a=document.createElement("a"); a.href=url; a.target="_blank"; a.rel="noopener"; a.className="v"; a.textContent=w.doi?w.doi.replace("https://doi.org/","doi:"):"Buka artikel"; li.appendChild(a); }
+      ul.appendChild(li);
+    }
+  };
+  ss.onchange=()=>{ detailState.sort=ss.value; draw(); };
+  ys.onchange=()=>{ detailState.year=ys.value; draw(); };
+  fl.querySelector("input").onchange=e=>{ detailState.first=e.target.checked; draw(); };
+  bx.onclick=()=>{ if(!xlsReady()) return; const wb=XLSX.utils.book_new();
+    addSheet(wb,"Karya", worksPerDosenTable([d], detailView(d)));
+    XLSX.writeFile(wb,`karya-${d.name.replace(/\W+/g,"-")}.xlsx`); };
+  draw();
+}
+
+/* ---- export Excel ---- */
+const L=(t,u)=>u?{t,l:u}:t;
+function xlsReady(){ if (typeof XLSX==="undefined"){ setStatus("Pembuat file Excel belum termuat. Periksa koneksi internet lalu muat ulang halaman.",true); return false; } return true; }
+
+function dosenTable(){
+  return {head:["No","Nama dosen","Jumlah profil","ORCID","Karya periode","Penulis pertama","Sitasi periode","Total karya","Total sitasi","h-index","i10-index","Status"],
+    rows:[...dosen].sort((a,b)=>a.no-b.no).map(d=>[d.no,d.name,d.active.length,d.orcid||"",
+      d.active.length?d.n:0, d.active.length?d.first:0, d.active.length?d.pcites:0,
+      d.works??"", d.cites??"", d.h??"", d.i10??"",
+      !d.active.length?"Tidak ditemukan":(d.weak?"Perlu cek":"Ditemukan")]),
+    widths:[5,32,8,22,10,10,10,10,10,8,8,14]};
+}
+function dtpsAuthorsOf(w){
+  const map=new Map(); dosen.forEach(d=>d.active.forEach(p=>map.set(p.id,d.name)));
+  return [...new Set((w.authorships||[]).map(x=>map.get(shortId(x.author?.id))).filter(Boolean))];
+}
+function worksTable(list){
+  return {head:["No","Judul artikel","Tahun","Jurnal / sumber","Tipe","Sitasi","Semua penulis","Penulis pertama","Penulis pertama DTPS","DTPS terlibat","DOI","Link artikel"],
+    rows:list.map((w,i)=>{
+      const aus=w.authorships||[], f=aus.find(x=>x.author_position==="first"), url=linkOf(w);
+      return [i+1, L(plain(w.display_name)||"(tanpa judul)",url), w.publication_year||"", w.primary_location?.source?.display_name||"",
+        w.type||"", w.cited_by_count||0, aus.map(x=>x.author?.display_name).filter(Boolean).join("; "),
+        f?.author?.display_name||"", isFirstDTPS(w)?"Ya":"Tidak", dtpsAuthorsOf(w).join("; "),
+        w.doi?L(w.doi.replace("https://doi.org/",""),w.doi):"", url?L(url,url):"tidak tersedia"];
+    }), widths:[5,60,7,34,12,8,45,24,10,34,26,40]};
+}
+function worksPerDosenTable(ds, override){
+  const rowsOut=[];
+  for (const d of [...ds].sort((a,b)=>a.no-b.no)){
+    const list=override||[...d.list].sort((a,b)=>(b.publication_year||0)-(a.publication_year||0));
+    for (const w of list){ const url=linkOf(w);
+      rowsOut.push([d.no,d.name,L(plain(w.display_name)||"(tanpa judul)",url),w.publication_year||"",
+        w.primary_location?.source?.display_name||"",w.cited_by_count||0,
+        d.firstSet.has(w.id)?"Penulis pertama":({middle:"Penulis anggota",last:"Penulis terakhir"}[posOf(w,d)]||"Penulis"),
+        (w.authorships||[]).map(x=>x.author?.display_name).filter(Boolean).join("; "),
+        w.doi?L(w.doi.replace("https://doi.org/",""),w.doi):"", url?L(url,url):"tidak tersedia"]); }
+  }
+  return {head:["No DTPS","Nama dosen","Judul artikel","Tahun","Jurnal / sumber","Sitasi","Posisi dosen","Semua penulis","DOI","Link artikel"],
+    rows:rowsOut, widths:[8,30,60,7,34,8,16,45,26,40]};
+}
+function yearTable(){
+  const by={};
+  for (const w of uniqueWorks){ const y=w.publication_year; if(!y) continue; by[y]=by[y]||{n:0,f:0,c:0}; by[y].n++; by[y].c+=w.cited_by_count||0; if(isFirstDTPS(w)) by[y].f++; }
+  return {head:["Tahun","Jumlah karya DTPS","Penulis pertama DTPS","Total sitasi"],
+    rows:Object.keys(by).sort().map(y=>[Number(y),by[y].n,by[y].f,by[y].c]), widths:[8,18,20,12]};
+}
+function summaryTable(){
+  return {head:["Keterangan","Nilai"], rows:[
+    ["Program studi","S1 Teknik Sipil, Universitas Teuku Umar"],
+    ["Cakupan","Dosen Tetap Program Studi (DTPS)"],
+    ["Periode publikasi",`${$("yearFrom").value}–${$("yearTo").value}`],
+    ["Hanya karya berafiliasi UTU",$("utuOnly").checked?"Ya":"Tidak"],
+    ["Waktu penarikan data", lastRun?lastRun.toLocaleString("id-ID"):"-"],
+    ["Jumlah DTPS dalam daftar", dosen.length],
+    ["DTPS ditemukan datanya", dosen.filter(d=>d.active.length).length],
+    ["Jumlah karya DTPS (tanpa duplikat)", uniqueWorks.length],
+    ["Karya dengan penulis pertama DTPS", uniqueWorks.filter(isFirstDTPS).length],
+    ["Total sitasi karya periode ini", uniqueWorks.reduce((s,w)=>s+(w.cited_by_count||0),0)],
+    ["Catatan","Angka dapat berbeda dari SINTA dan Google Scholar. Gunakan sebagai pembanding."]
+  ], widths:[38,70]};
+}
+function addSheet(wb,name,t){
+  const ws=XLSX.utils.aoa_to_sheet([t.head,...t.rows.map(r=>r.map(c=>c&&typeof c==="object"?c.t:c))]);
+  t.rows.forEach((r,ri)=>r.forEach((c,ci)=>{ if(c&&typeof c==="object"&&c.l){ const ref=XLSX.utils.encode_cell({r:ri+1,c:ci}); if(ws[ref]) ws[ref].l={Target:c.l,Tooltip:"Buka artikel"}; } }));
+  ws["!cols"]=(t.widths||[]).map(w=>({wch:w}));
+  ws["!autofilter"]={ref:XLSX.utils.encode_range({s:{r:0,c:0},e:{r:Math.max(t.rows.length,1),c:t.head.length-1}})};
+  XLSX.utils.book_append_sheet(wb,ws,name.replace(/[\\/?*\[\]:]/g," ").slice(0,31));
+}
+function exportX(kind){
+  if (!xlsReady()) return;
+  if (!dosen.length){ setStatus("Belum ada data. Klik Perbarui data dulu.",true); return; }
+  const sorted=[...uniqueWorks].sort((a,b)=>(b.publication_year||0)-(a.publication_year||0));
+  const wb=XLSX.utils.book_new();
+  if (kind==="full"){ addSheet(wb,"Ringkasan",summaryTable()); addSheet(wb,"DTPS",dosenTable()); addSheet(wb,"Karya DTPS",worksTable(sorted)); addSheet(wb,"Karya per Dosen",worksPerDosenTable(dosen)); addSheet(wb,"Per Tahun",yearTable()); }
+  if (kind==="dosen") addSheet(wb,"DTPS",dosenTable());
+  if (kind==="karya") addSheet(wb,"Karya DTPS",worksTable(sorted));
+  if (kind==="perdosen") addSheet(wb,"Karya per Dosen",worksPerDosenTable(dosen));
+  XLSX.writeFile(wb,`publikasi-dtps-teknik-sipil-utu-${kind}-${new Date().toISOString().slice(0,10)}.xlsx`);
+  setStatus("File Excel dibuat. Klik judul artikel atau kolom Link artikel untuk membuka artikelnya.");
+}
+
+/* ---- event ---- */
+document.querySelectorAll(".xbar button").forEach(b=>b.onclick=()=>exportX(b.dataset.x));
+document.querySelectorAll("th").forEach(th=>{
+  const go=()=>{ const k=th.dataset.k; sortDir=(sortKey===k)?-sortDir:((k==="name"||k==="no")?1:-1); sortKey=k; renderTable(); };
+  th.addEventListener("click",go); th.addEventListener("keydown",e=>{ if(e.key==="Enter") go(); });
+});
+$("filterName").addEventListener("input",renderTable);
+$("utuOnly").addEventListener("change",()=>{ if(dosen.length) compute(); });
+$("run").onclick=run;
+$("resetList").onclick=()=>{ try{ localStorage.removeItem("dtpsNames"); }catch(e){} $("names").value=DTPS.join("\n"); setStatus("Daftar DTPS dikembalikan ke 37 nama awal. Klik Perbarui data."); };
+run();
+</script>
+</body>
+</html>
